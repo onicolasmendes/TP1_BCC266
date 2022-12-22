@@ -55,7 +55,7 @@ void run(Machine* machine) {
                 address2 = instruction.info2;
                 RAMContent1 = machine->RAM.items[address1];
                 RAMContent2 = machine->RAM.items[address2];
-                result = RAMContent1-+ RAMContent2;
+                result = RAMContent1 - RAMContent2;
                 address3 = instruction.info3;
                 machine->RAM.items[address3] = result;
                 printf("  > Subtraindo RAM[%d] (%f) com RAM[%d] (%f) e salvando na RAM[%d] (%f).\n", 
