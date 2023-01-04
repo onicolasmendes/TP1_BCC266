@@ -8,4 +8,5 @@ Instruction* generateMultiplicationInstructions(int, int);
 Instruction* readInstructions(char*, int*);
 Instruction* generateDivisionInstructions(int, int);
 
+
 #endif // !GENERATOR_H

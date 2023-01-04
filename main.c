@@ -29,6 +29,9 @@ int main(int argc, char**argv) {
     } else if(strcmp(argv[1], "division") == 0){
         ramSize = atoi(argv[2]);
         instructions = generateDivisionInstructions(88, 8);
+    }else if(strcmp(argv[1], "multiply")==0){
+        ramSize = atoi(argv[2]);
+        instructions = generateMultiplicationInstructions(9, 9);
     }
     else {
         printf("Opcao invalida.\n");

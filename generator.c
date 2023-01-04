@@ -107,3 +107,46 @@ Instruction* generateDivisionInstructions(int dividendo, int divisor)
     return instrucoes; 
 }
 
+Instruction* generateMultiplicationInstructions(int fator1, int fator2)
+{
+    int qtdInstrucoes = 3;
+
+    Instruction* instrucoes = (Instruction*) malloc(qtdInstrucoes * sizeof(Instruction));
+
+    //Pegando o fator 1 e colocando na posição 0 do vetor da RAM
+    instrucoes[0].opcode = 0;
+    instrucoes[0].info1 = fator1;
+    instrucoes[0].info2 = 0;
+
+    //Pegando o fator 2 e colocando na posição 1 do vetor da RAM
+    instrucoes[1].opcode = 0;
+    instrucoes[1].info1 = fator2;
+    instrucoes[1].info2 = 1;
+
+    //Colocando o fator 2 no lugar do resultado da multiplicação (posição 2 do vetor da RAM)
+    instrucoes[2].opcode = 0;
+    instrucoes[2].info1 = fator2;
+    instrucoes[2].info2 = 2;
+
+    //Operação de multiplicação em si
+    for(int i = 1; i < fator1; i++)
+    {
+        qtdInstrucoes++;
+        instrucoes = (Instruction*) realloc(instrucoes, qtdInstrucoes*sizeof(Instruction));
+        //Soma
+        instrucoes[qtdInstrucoes - 1].opcode = 1; 
+        instrucoes[qtdInstrucoes - 1].info1 = 1; //Posição do fator2
+        instrucoes[qtdInstrucoes - 1].info2 = 2; //Posição do resultado
+        instrucoes[qtdInstrucoes - 1].info3 = 2; //Armazena a informação na posição do resultado   
+    }
+
+    //Criando a instrução para finalizar a máquina
+    instrucoes = realloc(instrucoes, (qtdInstrucoes+1)*sizeof(Instruction));
+
+    instrucoes[qtdInstrucoes].opcode = -1;
+    instrucoes[qtdInstrucoes].info1 = -1;
+    instrucoes[qtdInstrucoes].info2 = -1;
+    instrucoes[qtdInstrucoes].info3 = -1;
+
+    return instrucoes; 
+}
