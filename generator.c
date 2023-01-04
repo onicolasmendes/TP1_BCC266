@@ -150,3 +150,52 @@ Instruction* generateMultiplicationInstructions(int fator1, int fator2)
 
     return instrucoes; 
 }
+
+Instruction* generateExponentiationInstructions(int base, int expoente){
+    int qtdInstrucoes = 3;
+
+    Instruction* instrucoes = (Instruction*) malloc(qtdInstrucoes * sizeof(Instruction));
+
+    //Pegando a base e colocando na posição 0 do vetor da RAM
+    instrucoes[0].opcode = 0;
+    instrucoes[0].info1 = base;
+    instrucoes[0].info2 = 0;
+
+    //Pegando o expoente e colocando na posição 1 do vetor da RAM
+    instrucoes[1].opcode = 0;
+    instrucoes[1].info1 = expoente;
+    instrucoes[1].info2 = 1;
+
+    //Colocando 0 no lugar do resultado na posição 2 do vetor da RAM
+    instrucoes[2].opcode = 0;
+    instrucoes[2].info1 = 0;
+    instrucoes[2].info2 = 2;
+
+    //Operação de exponenciação em si
+    //Caso em que o expoente é 0
+    if(expoente == 0)
+    {
+        qtdInstrucoes++;
+        instrucoes = (Instruction*) realloc(instrucoes, qtdInstrucoes*sizeof(Instruction));
+        instrucoes[qtdInstrucoes-1].opcode = 0; //Operação de mover para RAM
+        instrucoes[qtdInstrucoes-1].info1 = 1;
+        instrucoes[qtdInstrucoes-1].info2 = 2; //Coloca 1 no lugar do resultado
+        return instrucoes;       
+    }
+
+    Instruction intrucoesMultiplicacao*;
+    for (int i = 0; i < expoente - 1; i++)
+    {
+        instrucoesMultiplicacao = generateMultiplicationInstructions(base, base);
+    }
+
+    //Criando a instrução para finalizar a máquina
+    instrucoes = realloc(instrucoes, (qtdInstrucoes+1)*sizeof(Instruction));
+
+    instrucoes[qtdInstrucoes].opcode = -1;
+    instrucoes[qtdInstrucoes].info1 = -1;
+    instrucoes[qtdInstrucoes].info2 = -1;
+    instrucoes[qtdInstrucoes].info3 = -1;
+
+    return instrucoes;  
+}

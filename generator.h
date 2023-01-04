@@ -7,6 +7,7 @@ Instruction* generateRandomInstructions(int);
 Instruction* generateMultiplicationInstructions(int, int);
 Instruction* readInstructions(char*, int*);
 Instruction* generateDivisionInstructions(int, int);
+Instruction* generateExponentiationInstructions(int, int);
 
 
 #endif // !GENERATOR_H
