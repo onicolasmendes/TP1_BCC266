@@ -56,3 +56,54 @@ Instruction* readInstructions(char* fileName, int* ramSize) {
 
     return instructions;
 }
+
+Instruction* generateDivisionInstructions(int dividendo, int divisor)
+{
+    int qtdInstrucoes = 4;
+
+    Instruction* instrucoes = (Instruction*) malloc(qtdInstrucoes * sizeof(Instruction));
+    
+    //Pegando o dividendo e colocando na posição 0 da RAM
+    instrucoes[0].opcode = 0;
+    instrucoes[0].info1 = dividendo;
+    instrucoes[0].info2 = 0;
+
+    //Pegando o divisor e colocando na posição 1 da RAM
+    instrucoes[1].opcode = 0;
+    instrucoes[1].info1 = divisor;
+    instrucoes[1].info2 = 1;
+
+    //Colocando 0 no quociente temporariamente na posição 2 da RAM
+    instrucoes[2].opcode = 0;
+    instrucoes[2].info1 = 0;
+    instrucoes[2].info2 = 2;
+
+    //Colocando 1 na posição 3 do vetor da ram, que será somado
+    instrucoes[3].opcode = 0;
+    instrucoes[3].info1 = 1;
+    instrucoes[3].info2 = 3;
+    
+    //Operação de divisão em si
+   // int quociente = divisor;
+    for (int i = divisor; i <= dividendo; i+=divisor)
+    {
+        qtdInstrucoes++;
+        instrucoes = realloc(instrucoes, qtdInstrucoes*sizeof(Instruction));
+
+        instrucoes[qtdInstrucoes - 1].opcode = 1; //Soma
+        instrucoes[qtdInstrucoes - 1].info1 = 2; //Posição do quociente
+        instrucoes[qtdInstrucoes - 1].info2 = 3; //Posição do 1
+        instrucoes[qtdInstrucoes - 1].info3 = 2; //Armazena a informação na posição do quociente   
+    }
+
+    //Criando a instrução para finalizar a máquina
+    instrucoes = realloc(instrucoes, (qtdInstrucoes+1)*sizeof(Instruction));
+
+    instrucoes[qtdInstrucoes].opcode = -1;
+    instrucoes[qtdInstrucoes].info1 = -1;
+    instrucoes[qtdInstrucoes].info2 = -1;
+    instrucoes[qtdInstrucoes].info3 = -1;
+
+    return instrucoes; 
+}
+

@@ -26,7 +26,10 @@ int main(int argc, char**argv) {
         instructions = generateRandomInstructions(ramSize);
     } else if (strcmp(argv[1], "file") == 0) {
         instructions = readInstructions(argv[2], &ramSize);
-    } 
+    } else if(strcmp(argv[1], "division") == 0){
+        ramSize = atoi(argv[2]);
+        instructions = generateDivisionInstructions(88, 8);
+    }
     else {
         printf("Opcao invalida.\n");
         return 0;
