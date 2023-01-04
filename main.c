@@ -34,7 +34,7 @@ int main(int argc, char**argv) {
         instructions = generateMultiplicationInstructions(9, 9);
     }else if(strcmp(argv[1], "exponentiation") == 0){
         ramSize = atoi(argv[2]);
-        instructions = generateExponentiationInstructions(2, 0);
+        instructions = generateExponentiationInstructions(2, 3);
     }
     else {
         printf("Opcao invalida.\n");
