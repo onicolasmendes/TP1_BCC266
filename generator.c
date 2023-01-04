@@ -182,20 +182,33 @@ Instruction* generateExponentiationInstructions(int base, int expoente){
         instrucoes[qtdInstrucoes-1].info2 = 2; //Coloca 1 no lugar do resultado
         return instrucoes;       
     }
+    //Caso em que o expoente não é 0
+    Instruction* instrucoesTemp = malloc((expoente - 1) * sizeof(Instruction));
 
-    Instruction intrucoesMultiplicacao*;
-    for (int i = 0; i < expoente - 1; i++)
+    int aux = qtdInstrucoes;
+    for (int i = 0; i < (expoente - 1); i++)
     {
-        instrucoesMultiplicacao = generateMultiplicationInstructions(base, base);
+        aux++;
+        instrucoesTemp = generateMultiplicationInstructions(base, base);
+    }
+    
+    instrucoes  = realloc(instrucoes, aux*sizeof(Instruction));
+
+    for (int i = 0; i < (expoente - 1); i++)
+    {
+        instrucoes[qtdInstrucoes + i] = instrucoesTemp[i];
     }
 
+    free(instrucoesTemp);
+
     //Criando a instrução para finalizar a máquina
-    instrucoes = realloc(instrucoes, (qtdInstrucoes+1)*sizeof(Instruction));
+    instrucoes = realloc(instrucoes, (aux+1)*sizeof(Instruction));
 
-    instrucoes[qtdInstrucoes].opcode = -1;
-    instrucoes[qtdInstrucoes].info1 = -1;
-    instrucoes[qtdInstrucoes].info2 = -1;
-    instrucoes[qtdInstrucoes].info3 = -1;
+    instrucoes[aux].opcode = -1;
+    instrucoes[aux].info1 = -1;
+    instrucoes[aux].info2 = -1;
+    instrucoes[aux].info3 = -1;
+    
+    return instrucoes;
 
-    return instrucoes;  
 }
