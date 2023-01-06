@@ -31,10 +31,10 @@ int main(int argc, char**argv) {
         instructions = generateDivisionInstructions(88, 8);
     }else if(strcmp(argv[1], "multiply")==0){
         ramSize = atoi(argv[2]);
-        instructions = generateMultiplicationInstructions(9, 9);
+        instructions = generateMultiplicationInstructions(9, 9, 0);
     }else if(strcmp(argv[1], "exponentiation") == 0){
         ramSize = atoi(argv[2]);
-        instructions = generateExponentiationInstructions(2, 3);
+        instructions = generateExponentiationInstructions(3, 4);
     }
     else {
         printf("Opcao invalida.\n");
