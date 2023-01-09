@@ -118,64 +118,85 @@ Instruction *generateMultiplicationInstructions(int fator1, int fator2, int expo
     int qtdInstrucoes = 3;
 
     Instruction *instrucoes = (Instruction *)malloc(qtdInstrucoes * sizeof(Instruction));
-
-    // Pegando o fator 1 e colocando na posição 0 do vetor da RAM
-    instrucoes[0].opcode = 0;
-    instrucoes[0].info1 = fator1;
-    instrucoes[0].info2 = 0;
-
-    // Pegando o fator 2 e colocando na posição 1 do vetor da RAM
-    instrucoes[1].opcode = 0;
-    instrucoes[1].info1 = fator2;
-    instrucoes[1].info2 = 1;
-
-    // Colocando o termo neutro da soma no lugar do resultado da multiplicação (posição 2 do vetor da RAM)
-    instrucoes[2].opcode = 0;
-    instrucoes[2].info1 = 0;
-    instrucoes[2].info2 = 2;
-
-    // Operação de multiplicação em si
-    for (int i = 0; i < fator1; i++)
+    
+    if (exponenciacao == 0) //Caso em que trata-se de uma multiplicação simples independente
     {
-        qtdInstrucoes++;
-        instrucoes = (Instruction *)realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
-        // Soma
-        instrucoes[qtdInstrucoes - 1].opcode = 1;
-        instrucoes[qtdInstrucoes - 1].info1 = 1; // Posição do fator2
-        instrucoes[qtdInstrucoes - 1].info2 = 2; // Posição do resultado
-        instrucoes[qtdInstrucoes - 1].info3 = 2; // Armazena a informação na posição do resultado
-    }
 
-    if (!exponenciacao)
-    {
+        // Pegando o fator 1 e colocando na posição 0 do vetor da RAM
+        instrucoes[0].opcode = 0;
+        instrucoes[0].info1 = fator1;
+        instrucoes[0].info2 = 0;
+
+        // Pegando o fator 2 e colocando na posição 1 do vetor da RAM
+        instrucoes[1].opcode = 0;
+        instrucoes[1].info1 = fator2;
+        instrucoes[1].info2 = 1;
+
+        // Colocando o termo neutro da soma no lugar do resultado da multiplicação (posição 2 do vetor da RAM)
+        instrucoes[2].opcode = 0;
+        instrucoes[2].info1 = 0;
+        instrucoes[2].info2 = 2;
+
+        // Operação de multiplicação em si
+        for (int i = 0; i < fator1; i++) 
+        {
+            qtdInstrucoes++;
+            instrucoes = (Instruction *)realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
+            // Soma
+            instrucoes[qtdInstrucoes - 1].opcode = 1;
+            instrucoes[qtdInstrucoes - 1].info1 = 1; // Posição do fator2
+            instrucoes[qtdInstrucoes - 1].info2 = 2; // Posição do resultado
+            instrucoes[qtdInstrucoes - 1].info3 = 2; // Armazena a informação na posição do resultado
+        }
+
         // Criando a instrução para finalizar a máquina
         instrucoes = realloc(instrucoes, (qtdInstrucoes + 1) * sizeof(Instruction));
         instrucoes[qtdInstrucoes].opcode = -1;
         instrucoes[qtdInstrucoes].info1 = -1;
         instrucoes[qtdInstrucoes].info2 = -1;
         instrucoes[qtdInstrucoes].info3 = -1;
-        printf("OPA\n");
-        
     }
-    else
+    else //Caso em que trata-se de uma multiplicação que faz parte do processo da função de exponenciação
     {
+        qtdInstrucoes = 0;
+        for (int i = 0; i < fator1; i++) //For para realizar as sucessivas somas
+        {
+            qtdInstrucoes++;
+            instrucoes = (Instruction *)realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
+            // Soma
+            instrucoes[qtdInstrucoes - 1].opcode = 1;
+            instrucoes[qtdInstrucoes - 1].info1 = 3; // Posição do elemento fixo; Parcela fixa de cada soma realizada
+            instrucoes[qtdInstrucoes - 1].info2 = 4; // Posição do elemento acumulativo; Acumula as somas anteriores
+            instrucoes[qtdInstrucoes - 1].info3 = 4; // Armazena a informação na posição do elemento acumulativo
+        }
+
         qtdInstrucoes++;
-        instrucoes = realloc(instrucoes, (qtdInstrucoes) * sizeof(Instruction));
-        // Pegar o resultado parcial da multiplicação e somar com o resultado da exponenciação
-        instrucoes[qtdInstrucoes-1].opcode = 1;
-        instrucoes[qtdInstrucoes-1].info1 = 2;
-        instrucoes[qtdInstrucoes-1].info2 = 3;
-        instrucoes[qtdInstrucoes-1].info3 = 3;
+        instrucoes = (Instruction *)realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
+
+        //O elemento acumulativo (posição 4) passa a ser o elemento fixo (posição 2) das próximas somas
+        instrucoes[qtdInstrucoes - 1].opcode = 1;
+        instrucoes[qtdInstrucoes - 1].info1 = 4; // Posição do elemento acumulativo
+        instrucoes[qtdInstrucoes - 1].info2 = 2; // Posição do elemento neutro da soma(0)
+        instrucoes[qtdInstrucoes - 1].info3 = 3; // Armazena a informação na posição do elemento fixo
+
+        qtdInstrucoes++;
+        instrucoes = (Instruction *)realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
+
+        //Zera o elemento acumulativo
+        instrucoes[qtdInstrucoes-1].opcode = 0;
+        instrucoes[qtdInstrucoes-1].info1 = 0;
+        instrucoes[qtdInstrucoes-1].info2 = 4;
     }
-    
+
     return instrucoes;
 }
 
 Instruction *generateExponentiationInstructions(int base, int expoente)
 {
-    int qtdInstrucoes = 3;
+    int qtdInstrucoes = 4;
 
     Instruction *instrucoes = (Instruction *)malloc(qtdInstrucoes * sizeof(Instruction));
+   
     // Pegando a base e colocando na posição 0 do vetor da RAM
     instrucoes[0].opcode = 0;
     instrucoes[0].info1 = base;
@@ -186,14 +207,18 @@ Instruction *generateExponentiationInstructions(int base, int expoente)
     instrucoes[1].info1 = expoente;
     instrucoes[1].info2 = 1;
 
-    // Colocando 0 no lugar do resultado na posição 2 do vetor da RAM
+    //Pegando a base e colocando na posição 3 do vetor da RAM
     instrucoes[2].opcode = 0;
-    instrucoes[2].info1 = 0;
+    instrucoes[2].info1 = base;
     instrucoes[2].info2 = 3;
 
-    // Operação de exponenciação em si
+    //Colocando 0 (elemento neutro da soma) na posição 2 do vetor da RAM
+    instrucoes[3].opcode = 0;
+    instrucoes[3].info1 = 0;
+    instrucoes[3].info2 = 2;
 
-    // Caso em que o expoente é 0
+    // Operação de exponenciação em si
+    // Caso em que o expoente é 0, resultado igual a 1
     if (expoente == 0)
     {
         qtdInstrucoes++;
@@ -212,13 +237,17 @@ Instruction *generateExponentiationInstructions(int base, int expoente)
     }
 
     // Caso em que o expoente não é 0
+
+    //Vetor do tipo Instruction para armazenar cada vetor Instruction de cada multiplicação do loop
+   
     Instruction *instrucoesTemp;
-    int qtdInstrucoesTemp = 4 + base;
-    
-    for (int i = 1; i <expoente; i++)
+    int qtdInstrucoesTemp = 2 + base; //Numero de instrucoes geradas pela função generateMultiplicationInstructions() no caso da exponenciacao
+
+    for (int i = 1; i < expoente; i++)
     {
         instrucoesTemp = generateMultiplicationInstructions(base, base, 1);
-        instrucoes = realloc(instrucoes, (qtdInstrucoes + qtdInstrucoesTemp) * sizeof(Instruction));
+        instrucoes = realloc(instrucoes, (qtdInstrucoes + qtdInstrucoesTemp) * sizeof(Instruction)); 
+        //Passando as instruções para o vetor que será retornado pela funcão de exponenciação
         for (int j = 0; j < qtdInstrucoesTemp; j++)
         {
             instrucoes[qtdInstrucoes + j] = instrucoesTemp[j];
@@ -226,13 +255,21 @@ Instruction *generateExponentiationInstructions(int base, int expoente)
         qtdInstrucoes += qtdInstrucoesTemp;
     }
 
-   qtdInstrucoes++;
-
+    //Pegando resultado da exponenciação (posição 3), somando com 0 e colocando na posição 2 (posição do resultado). Na prática, alterando a posição do elemento
+    qtdInstrucoes++;
     instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
-    instrucoes[qtdInstrucoes-1].opcode = -1;
-    instrucoes[qtdInstrucoes-1].info1 = -1;
-    instrucoes[qtdInstrucoes-1].info2 = -1;
-    instrucoes[qtdInstrucoes-1].info3 = -1;
+    instrucoes[qtdInstrucoes - 1].opcode = 1;
+    instrucoes[qtdInstrucoes - 1].info1 = 3;
+    instrucoes[qtdInstrucoes - 1].info2 = 2;
+    instrucoes[qtdInstrucoes - 1].info3 = 2;
+   
+    //Instrução para desligar a máquina
+    qtdInstrucoes++;
+    instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
+    instrucoes[qtdInstrucoes - 1].opcode = -1;
+    instrucoes[qtdInstrucoes - 1].info1 = -1;
+    instrucoes[qtdInstrucoes - 1].info2 = -1;
+    instrucoes[qtdInstrucoes - 1].info3 = -1;
 
     return instrucoes;
 }
