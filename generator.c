@@ -95,7 +95,6 @@ Instruction *generateDivisionInstructions(int dividendo, int divisor)
     instrucoes[4].info2 = 4;
 
     // Operação de divisão em si
-    // int quociente = divisor;
     for (int i = divisor; i <= dividendo; i+= divisor)
     {
         qtdInstrucoes++;
