@@ -205,7 +205,7 @@ Instruction *generateMultiplicationInstructions(int fator1, int fator2, int expo
 
 Instruction *generateExponentiationInstructions(int base, int expoente) //Base na posição 0 da RAM; Expoente na posição 1; Resultado na posição 2;
 {
-    int qtdInstrucoes = 4;
+    int qtdInstrucoes = 5;
 
     Instruction *instrucoes = (Instruction *)malloc(qtdInstrucoes * sizeof(Instruction));
 
@@ -224,10 +224,15 @@ Instruction *generateExponentiationInstructions(int base, int expoente) //Base n
     instrucoes[2].info1 = base;
     instrucoes[2].info2 = 3;
 
-    // Colocando 0 (elemento neutro da soma) na posição 2 do vetor da RAM
+    // Colocando 0 (elemento neutro da soma) na posição 2 do vetor da RAM; Será usado para mover um valor sem alterar o conteúdo do mesmo
     instrucoes[3].opcode = 0;
     instrucoes[3].info1 = 0;
     instrucoes[3].info2 = 2;
+
+    //Colocando 0 na posição 4 da RAM; Posição que acumulará as sucessivas somas de cada multiplicação
+    instrucoes[4].opcode = 0;
+    instrucoes[4].info1 = 0;
+    instrucoes[4].info2 = 4;
 
     // Operação de exponenciação em si
     // Caso em que o expoente é 0, resultado igual a 1
@@ -249,14 +254,13 @@ Instruction *generateExponentiationInstructions(int base, int expoente) //Base n
     }
 
     // Caso em que o expoente não é 0
-
     // Vetor do tipo Instruction para armazenar cada vetor Instruction de cada multiplicação do loop
-
-    Instruction *instrucoesTemp;
+    
     int qtdInstrucoesTemp = 2 + base; // Numero de instrucoes geradas pela função generateMultiplicationInstructions() no caso da exponenciacao
 
     for (int i = 1; i < expoente; i++)
     {
+        Instruction *instrucoesTemp;
         instrucoesTemp = generateMultiplicationInstructions(base, base, 1);
         instrucoes = realloc(instrucoes, (qtdInstrucoes + qtdInstrucoesTemp) * sizeof(Instruction));
         // Passando as instruções para o vetor que será retornado pela funcão de exponenciação
@@ -265,6 +269,7 @@ Instruction *generateExponentiationInstructions(int base, int expoente) //Base n
             instrucoes[qtdInstrucoes + j] = instrucoesTemp[j];
         }
         qtdInstrucoes += qtdInstrucoesTemp;
+        free(instrucoesTemp);
     }
 
     // Pegando resultado da exponenciação (posição 3), somando com 0 e colocando na posição 2 (posição do resultado). Na prática, alterando a posição do elemento
@@ -274,6 +279,8 @@ Instruction *generateExponentiationInstructions(int base, int expoente) //Base n
     instrucoes[qtdInstrucoes - 1].info1 = 3;
     instrucoes[qtdInstrucoes - 1].info2 = 2;
     instrucoes[qtdInstrucoes - 1].info3 = 2;
+
+    
 
     // Instrução para desligar a máquina
     qtdInstrucoes++;

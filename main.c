@@ -34,7 +34,7 @@ int main(int argc, char**argv) {
         instructions = generateMultiplicationInstructions(9, 9, 0);
     }else if(strcmp(argv[1], "exponentiation") == 0){
         ramSize = atoi(argv[2]);
-        instructions = generateExponentiationInstructions(7, 3);
+        instructions = generateExponentiationInstructions(5, 4);
     }else if(strcmp(argv[1], "fibonacci") == 0){
         ramSize = atoi(argv[2]);
         instructions = generateFibonacciInstructions(14);
