@@ -65,7 +65,7 @@ Instruction *readInstructions(char *fileName, int *ramSize)
 
 Instruction *generateDivisionInstructions(int dividendo, int divisor)
 {
-    int qtdInstrucoes = 4;
+    int qtdInstrucoes = 5;
 
     Instruction *instrucoes = (Instruction *)malloc(qtdInstrucoes * sizeof(Instruction));
 
@@ -84,10 +84,15 @@ Instruction *generateDivisionInstructions(int dividendo, int divisor)
     instrucoes[2].info1 = 0;
     instrucoes[2].info2 = 2;
 
-    // Colocando 1 na posição 3 do vetor da ram, que será somado
+    // Colocando dividendo na posição 3 da RAM, que será sucessivamente decrescida para ser o resto da divisão
     instrucoes[3].opcode = 0;
-    instrucoes[3].info1 = 1;
+    instrucoes[3].info1 = dividendo;
     instrucoes[3].info2 = 3;
+    
+    // Colocando 1 na posição 4 do vetor da ram, que será somado
+    instrucoes[4].opcode = 0;
+    instrucoes[4].info1 = 1;
+    instrucoes[4].info2 = 4;
 
     // Operação de divisão em si
     // int quociente = divisor;
@@ -98,15 +103,15 @@ Instruction *generateDivisionInstructions(int dividendo, int divisor)
 
         instrucoes[qtdInstrucoes - 1].opcode = 1; // Soma
         instrucoes[qtdInstrucoes - 1].info1 = 2;  // Posição do quociente
-        instrucoes[qtdInstrucoes - 1].info2 = 3;  // Posição do 1
+        instrucoes[qtdInstrucoes - 1].info2 = 4;  // Posição do 1
         instrucoes[qtdInstrucoes - 1].info3 = 2;  // Armazena a informação na posição do quociente
 
         qtdInstrucoes++;
         instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
         instrucoes[qtdInstrucoes - 1].opcode = 2; // Subtração
-        instrucoes[qtdInstrucoes - 1].info1 = 0;  // Posição do dividendo
+        instrucoes[qtdInstrucoes - 1].info1 = 3;  // Posição do resto
         instrucoes[qtdInstrucoes - 1].info2 = 1;  // Posição do divisor
-        instrucoes[qtdInstrucoes - 1].info3 = 0;  // Armazena a informação na posição do dividendo
+        instrucoes[qtdInstrucoes - 1].info3 = 3;  // Armazena a informação na posição do resto
     }
 
     qtdInstrucoes++;
