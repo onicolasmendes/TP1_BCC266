@@ -63,7 +63,7 @@ Instruction *readInstructions(char *fileName, int *ramSize)
     return instructions;
 }
 
-Instruction *generateDivisionInstructions(int dividendo, int divisor)
+Instruction *generateDivisionInstructions(int dividendo, int divisor) //Dividendo na posição 0 da RAM; Divisor na posição 1; Quociente na posição 2; Resto na posição 3;
 {
     int qtdInstrucoes = 5;
 
@@ -125,7 +125,7 @@ Instruction *generateDivisionInstructions(int dividendo, int divisor)
     return instrucoes;
 }
 
-Instruction *generateMultiplicationInstructions(int fator1, int fator2, int exponenciacao)
+Instruction *generateMultiplicationInstructions(int fator1, int fator2, int exponenciacao) //Primeiro fator na posição 0 da RAM; Segundo fator na posição 1; Resultado na posição 2;
 {
     int qtdInstrucoes = 3;
 
@@ -203,7 +203,7 @@ Instruction *generateMultiplicationInstructions(int fator1, int fator2, int expo
     return instrucoes;
 }
 
-Instruction *generateExponentiationInstructions(int base, int expoente)
+Instruction *generateExponentiationInstructions(int base, int expoente) //Base na posição 0 da RAM; Expoente na posição 1; Resultado na posição 2;
 {
     int qtdInstrucoes = 4;
 
@@ -286,23 +286,23 @@ Instruction *generateExponentiationInstructions(int base, int expoente)
     return instrucoes;
 }
 
-Instruction *generateFibonacciInstructions(int posicaoTermo)
+Instruction *generateFibonacciInstructions(int posicaoTermo) //Termo requisitado na posição 2 da RAM; Termo anterior ao requisitado na posição 1; Termo anterior ao termo anterior ao requisitado na posição 0;
 {
     int qtdInstrucoes = 2;
 
     Instruction *instrucoes = (Instruction *)malloc(qtdInstrucoes * sizeof(Instruction));
 
-    // Colocando 1 na posição 1
+    // Colocando 1 na posição 0 (primeiro termo da sequência)
     instrucoes[0].opcode = 0;
     instrucoes[0].info1 = 1;
     instrucoes[0].info2 = 0;
 
-    // Colocando 1 na posição 1
+    // Colocando 1 na posição 1 (segundo termo da sequência)
     instrucoes[1].opcode = 0;
     instrucoes[1].info1 = 1;
     instrucoes[1].info2 = 1;
 
-    if ((posicaoTermo == 1) || (posicaoTermo == 2))
+    if ((posicaoTermo == 1) || (posicaoTermo == 2)) //Caso em que a posição do termo requerido é 1 ou 2
     {
 
         qtdInstrucoes += 2;
@@ -311,7 +311,7 @@ Instruction *generateFibonacciInstructions(int posicaoTermo)
         instrucoes[2].opcode = 0;
         instrucoes[2].info1 = 1;
         instrucoes[2].info2 = 2;
-
+        //Instrução para desligar a máquina
         instrucoes[qtdInstrucoes - 1].opcode = -1;
         instrucoes[qtdInstrucoes - 1].info1 = -1;
         instrucoes[qtdInstrucoes - 1].info2 = -1;
@@ -322,7 +322,7 @@ Instruction *generateFibonacciInstructions(int posicaoTermo)
 
     qtdInstrucoes++;
     instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
-
+    //Colocando 0 (termo neutro da soma) na posição 3
     instrucoes[2].opcode = 0;
     instrucoes[2].info1 = 0;
     instrucoes[2].info2 = 3;
@@ -331,7 +331,7 @@ Instruction *generateFibonacciInstructions(int posicaoTermo)
     {
         qtdInstrucoes++;
         instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
-
+        //Soma os dois termos anteriores e armazena na posição 2
         instrucoes[qtdInstrucoes - 1].opcode = 1;
         instrucoes[qtdInstrucoes - 1].info1 = 0;
         instrucoes[qtdInstrucoes - 1].info2 = 1;
@@ -339,12 +339,12 @@ Instruction *generateFibonacciInstructions(int posicaoTermo)
 
         qtdInstrucoes += 2;
         instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
-
+        //Pega o segundo termo e coloca na posição do primeiro
         instrucoes[qtdInstrucoes - 2].opcode = 1;
         instrucoes[qtdInstrucoes - 2].info1 = 1;
         instrucoes[qtdInstrucoes - 2].info2 = 3;
         instrucoes[qtdInstrucoes - 2].info3 = 0;
-
+        //O resultado produzido pela soma passa a ser o novo segundo termo
         instrucoes[qtdInstrucoes - 1].opcode = 1;
         instrucoes[qtdInstrucoes - 1].info1 = 2;
         instrucoes[qtdInstrucoes - 1].info2 = 3;
@@ -353,7 +353,7 @@ Instruction *generateFibonacciInstructions(int posicaoTermo)
 
     qtdInstrucoes++;
     instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
-
+    //Instruções para desligar a máquina
     instrucoes[qtdInstrucoes - 1].opcode = -1;
     instrucoes[qtdInstrucoes - 1].info1 = -1;
     instrucoes[qtdInstrucoes - 1].info2 = -1;
