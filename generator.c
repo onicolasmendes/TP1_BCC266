@@ -91,7 +91,7 @@ Instruction *generateDivisionInstructions(int dividendo, int divisor)
 
     // Operação de divisão em si
     // int quociente = divisor;
-    for (int i = divisor; i <= dividendo; i += divisor)
+    for (int i = divisor; i <= dividendo; i+= divisor)
     {
         qtdInstrucoes++;
         instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
@@ -100,15 +100,23 @@ Instruction *generateDivisionInstructions(int dividendo, int divisor)
         instrucoes[qtdInstrucoes - 1].info1 = 2;  // Posição do quociente
         instrucoes[qtdInstrucoes - 1].info2 = 3;  // Posição do 1
         instrucoes[qtdInstrucoes - 1].info3 = 2;  // Armazena a informação na posição do quociente
+
+        qtdInstrucoes++;
+        instrucoes = realloc(instrucoes, qtdInstrucoes * sizeof(Instruction));
+        instrucoes[qtdInstrucoes - 1].opcode = 2; // Subtração
+        instrucoes[qtdInstrucoes - 1].info1 = 0;  // Posição do dividendo
+        instrucoes[qtdInstrucoes - 1].info2 = 1;  // Posição do divisor
+        instrucoes[qtdInstrucoes - 1].info3 = 0;  // Armazena a informação na posição do dividendo
     }
 
+    qtdInstrucoes++;
     // Criando a instrução para finalizar a máquina
-    instrucoes = realloc(instrucoes, (qtdInstrucoes + 1) * sizeof(Instruction));
+    instrucoes = realloc(instrucoes, (qtdInstrucoes) * sizeof(Instruction));
 
-    instrucoes[qtdInstrucoes].opcode = -1;
-    instrucoes[qtdInstrucoes].info1 = -1;
-    instrucoes[qtdInstrucoes].info2 = -1;
-    instrucoes[qtdInstrucoes].info3 = -1;
+    instrucoes[qtdInstrucoes-1].opcode = -1;
+    instrucoes[qtdInstrucoes-1].info1 = -1;
+    instrucoes[qtdInstrucoes-1].info2 = -1;
+    instrucoes[qtdInstrucoes-1].info3 = -1;
 
     return instrucoes;
 }
