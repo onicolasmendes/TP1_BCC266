@@ -5,11 +5,13 @@
 #include <string.h>
 #include <time.h>
 
-int main(int argc, char**argv) {
+int main(int argc, char **argv)
+{
 
-    srand(time(NULL));   // Inicializacao da semente para os numeros aleatorios.
+    srand(time(NULL)); // Inicializacao da semente para os numeros aleatorios.
 
-    if (argc != 3) {
+    if (argc != 3)
+    {
         printf("Numero de argumentos invalidos! Sao 3.\n");
         printf("Linha de execucao: ./exe TIPO_INSTRUCAO [TAMANHO_RAM|ARQUIVO_DE_INSTRUCOES]\n");
         printf("\tExemplo 1 de execucao: ./exe random 10\n");
@@ -21,29 +23,41 @@ int main(int argc, char**argv) {
     Machine machine;
     Instruction *instructions;
 
-    if (strcmp(argv[1], "random") == 0) {
+    if (strcmp(argv[1], "random") == 0)
+    {
         ramSize = atoi(argv[2]);
         instructions = generateRandomInstructions(ramSize);
-    } else if (strcmp(argv[1], "file") == 0) {
+    }
+    else if (strcmp(argv[1], "file") == 0)
+    {
         instructions = readInstructions(argv[2], &ramSize);
-    } else if(strcmp(argv[1], "division") == 0){
+    }
+    else if (strcmp(argv[1], "division") == 0)
+    {
         ramSize = atoi(argv[2]);
         instructions = generateDivisionInstructions(88, 7);
-    }else if(strcmp(argv[1], "multiply")==0){
+    }
+    else if (strcmp(argv[1], "multiply") == 0)
+    {
         ramSize = atoi(argv[2]);
         instructions = generateMultiplicationInstructions(9, 9, 0);
-    }else if(strcmp(argv[1], "exponentiation") == 0){
+    }
+    else if (strcmp(argv[1], "exponentiation") == 0)
+    {
         ramSize = atoi(argv[2]);
         instructions = generateExponentiationInstructions(5, 4);
-    }else if(strcmp(argv[1], "fibonacci") == 0){
+    }
+    else if (strcmp(argv[1], "fibonacci") == 0)
+    {
         ramSize = atoi(argv[2]);
         instructions = generateFibonacciInstructions(14);
     }
-    else {
+    else
+    {
         printf("Opcao invalida.\n");
         return 0;
     }
-    
+
     printf("Iniciando a maquina...\n");
     start(&machine, instructions, ramSize);
     printRAM(&machine);
