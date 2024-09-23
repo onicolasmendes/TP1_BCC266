@@ -25,4 +25,5 @@ Gera o termo desejado a partir de somas sucessivas.
 
 ## Tecnologias Utilizadas
 Linguagem: C
+
 Build System: Makefile
