@@ -3,15 +3,25 @@ Este projeto foi desenvolvido para a disciplina de Organização de Computadores
 
 ## Funcionalidades Implementadas
 
-Operações Básicas: Implementação das operações de soma e subtração.
+### Operações Básicas
 
-Multiplicação: Realizada por meio de somas repetidas, com suporte para operações independentes e dentro de exponenciações.
+Implementação das operações de soma e subtração.
 
-Divisão: Implementada usando subtrações sucessivas.
+### Multiplicação
 
-Exponenciação: Calculada com base na multiplicação.
+Realizada por meio de somas repetidas, com suporte para operações independentes e dentro de exponenciações.
 
-Sequência de Fibonacci: Gera o termo desejado a partir de somas sucessivas.
+### Divisão
+
+Implementada usando subtrações sucessivas.
+
+### Exponenciação
+
+Calculada com base na multiplicação.
+
+### Sequência de Fibonacci
+
+Gera o termo desejado a partir de somas sucessivas.
 
 ## Tecnologias Utilizadas
 Linguagem: C
